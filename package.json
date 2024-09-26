@@ -1,0 +1,22 @@
+{
+    "name": "geolocation-api",
+    "version": "1.0.0",
+    "description": "geolocation-api-project",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/EsmailSarwari/mapty.git"
+    },
+    "keywords": [
+        "geolocation"
+    ],
+    "author": "Esmail Sarwari",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/EsmailSarwari/mapty/issues"
+    },
+    "homepage": "https://github.com/EsmailSarwari/mapty#readme"
+}
