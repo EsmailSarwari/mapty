@@ -1,6 +1,5 @@
 'use strict';
 
-
 // prettier-ignore
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
@@ -17,8 +16,8 @@ navigator.geolocation.getCurrentPosition(
     (position) => {
         const { latitude } = position.coords;
         const { longitude } = position.coords;
-        console.log(latitude);
-        console.log(longitude);
+        // console.log(latitude);
+        // console.log(longitude);
 
         const coordinates = [latitude, longitude];
 
@@ -43,7 +42,26 @@ navigator.geolocation.getCurrentPosition(
         }).addTo(map);
 
         // add popups
-        marker.bindPopup('<b> Hello World!</b><br>I am here :)').openPopup();
+        marker.bindPopup('<b> Hello World!</b><br>I am here :)', {
+            closeOnClick: false,
+            autoClose: false,
+            className: 'running-popup'
+        }).openPopup();
+
+        // add popup event on mapClick
+        map.on('click', (mapEvent) => {
+            const { lat, lng } = mapEvent.latlng;
+
+            L.marker([lat, lng]).addTo(map).bindPopup(L.popup({
+                maxWidth: 250,
+                maxHeigth: 100,
+                autoClose: false,
+                closeOnClick: false,
+                className: 'running-popup',
+            }))
+            .setPopupContent('Hey There')
+            .openPopup();
+        });
     },
     (err) => {
         console.log('error occured: ', err);
