@@ -69,7 +69,13 @@ class App {
     #workouts = [];
 
     constructor() {
+        // get user locaiton
         this._getPosition();
+
+        // get local storage
+        this._getLocalStorage();
+
+        // attach event handlers
         form.addEventListener('submit', this._newWorkOut.bind(this));
         inputType.addEventListener('change', this._toggleElevationField);
         containerWorkouts.addEventListener(
@@ -125,6 +131,10 @@ class App {
 
         // add popup event on mapClick
         this.#map.on('click', this._showForm.bind(this));
+
+        this.#workouts.forEach((work) => {
+            this._renderWorkoutMarker(work);
+        });
     }
 
     _showForm(e) {
@@ -203,7 +213,7 @@ class App {
         }
         // push the new object to the array
         this.#workouts.push(workout);
-        console.log(workout);
+
 
         // popups after submitting
         this._renderWorkoutMarker(workout);
@@ -213,6 +223,9 @@ class App {
 
         // empty the input values
         this._hideForm();
+
+        // set local storage to all workouts
+        this._setLocalStorage();
     }
 
     _renderWorkoutMarker(workout) {
@@ -287,14 +300,12 @@ class App {
 
     _moveToPopup(e) {
         const workoutEl = e.target.closest('.workout');
-        console.log(workoutEl);
 
         if (!workoutEl) return;
 
         const workout = this.#workouts.find(
             (work) => work.id === workoutEl.dataset.id
         );
-        console.log(workout);
 
         this.#map.setView(workout.coords, this.#mapViewLevel, {
             animate: true,
@@ -304,10 +315,29 @@ class App {
         });
 
         // using the public interface
-        workout.click();
+        // workout.click();
+    }
+
+    _setLocalStorage() {
+        localStorage.setItem('workouts', JSON.stringify(this.#workouts));
+    }
+
+    _getLocalStorage() {
+        const data = JSON.parse(localStorage.getItem('workouts'));
+
+        if (!data) return;
+
+        this.#workouts = data;
+
+        this.#workouts.forEach((work) => {
+            this._renderWorkout(work);
+        });
+    }
+
+    reset() {
+        localStorage.removeItem('workouts');
+        location.reload();
     }
 }
 
 const app = new App();
-
-// Get the geolocation of the user
